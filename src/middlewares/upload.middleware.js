@@ -40,6 +40,7 @@ export const upload = multer({
         ]
         // find original file extension
         const extension = path.extname(file.originalname)
+        console.log(extension)
         if (allowedExtensions.includes(extension)) {
             cb(null, true)
         } else {
