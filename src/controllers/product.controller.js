@@ -32,8 +32,10 @@ export const getAll = async (req, res, next) => {
         }
         const result = await Product.find(searchQuery)
             .limit(limit)
-            .skip(skip).sort({ createdAt: -1 }).populate({
-                path: "category",select: "name"
+            .skip(skip).sort({ createdAt: -1 })
+            .populate({
+                path: "category",
+                select: "name"
             })
         const totalRecord = await Product.countDocuments()
 
@@ -61,3 +63,31 @@ export const getOne = async (req, res, next) => {
         next(error)
     }
 }
+
+export const update = async (req, res, next) => {
+    try {
+        const result = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        if (!result) return res.status(404).json({ success: false, error: "Product not found!" })
+        res.status(200).json({
+            success: true,
+            result: result
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+export const remove = async (req, res, next) => {
+    try {
+        const result = await Product.findByIdAndDelete(req.params.id)
+        if (!result) return res.status(404).json({ success: false, error: "Product not found!" })
+        res.status(201).json({
+            success: true,
+            result: []
+        })
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+
