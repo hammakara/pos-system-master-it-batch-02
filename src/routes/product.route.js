@@ -1,9 +1,10 @@
 import express from 'express'
 import { create, getAll, getOne, remove, update } from '../controllers/product.controller.js'
+import { Roles } from '../middlewares/permission.middleware.js'
 const router=express.Router()
-router.post('/',create)
-router.get('/',getAll)
-router.get('/:id',getOne)
-router.put('/:id',update)
-router.delete('/:id',remove)
+router.post('/',Roles("manager"),create)
+router.get('/',Roles("manager","cashier"),getAll)
+router.get('/:id',Roles("manager","cashier"),getOne)
+router.put('/:id',Roles("manager"),update)
+router.delete('/:id',Roles("manager"),remove)
 export default router

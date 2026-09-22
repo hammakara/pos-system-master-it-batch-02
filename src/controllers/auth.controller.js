@@ -5,8 +5,16 @@ export const signup = async(req,res ,next)=>{
     try {
         const {username,email,password,role} = req.body
         const existUser = await User.findOne({email})
+        console.log(req.user)
         if(existUser)return res.status(400).json({success:false,error:"User ready exist!"})
-        
+
+        if(req.user.role !=="admin" && req.body.role=="manager"){
+            return res.status(403).json({
+                success:false,
+                error:"only admin can create manager account"
+            })
+        }
+
         const hashPassword = await bcrypt.hash(password,10)
         const newUser = await User.create({
             username,

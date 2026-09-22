@@ -13,6 +13,7 @@ export const create = async (req, res, next) => {
 }
 export const getAll = async (req, res, next) => {
     try {
+        console.log(req.user)
         // const { page, limit, search } = req.query
         const page = req.query.page || 1
         const limit = req.query.limit || 1
