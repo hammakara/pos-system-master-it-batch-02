@@ -14,7 +14,6 @@ export const signup = async(req,res ,next)=>{
                 error:"only admin can create manager account"
             })
         }
-
         const hashPassword = await bcrypt.hash(password,10)
         const newUser = await User.create({
             username,
@@ -73,3 +72,24 @@ export const signin = async(req,res,next)=>{
         next(error)
     }
 }
+
+// signout
+export const signout = async(req,res,next)=>{
+    try {
+        res.clearCookie('token',{
+            httpOnly:true,
+            secure:false,
+            sameSite:"none",
+        })
+        res.status(200).json({
+            success:true,
+            message:"Sign out success!"
+        })
+        
+    } catch (error) {
+        next(error)
+    }
+}
+// get profile
+
+
