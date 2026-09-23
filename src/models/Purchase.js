@@ -43,8 +43,37 @@ const purchaseSchema = new mongoose.Schema({
                 required:true
             }
         }
-    ]
-
+    ],
+    totalCost:{
+        type:Number,
+        required:true,
+        min:0
+    },
+    paidAmount:{
+        type:Number,
+        default:0,
+        min:0
+    },
+    dueAmount:{
+        type:Number,
+        default:0,
+        min:0   
+    },
+    changeAmount:{
+        type:Number,
+        default:0,
+        min:0   
+    },
+    paymentStatus:{
+        type:String,
+        enum:["piad","due","partial"],
+        default:"due"
+    },
+    purchaseStatus:{
+        type:String,
+        enum:["received","ordered","pending","cancel"],
+        default:"pending"
+    }
 
 },{timestamps:true})
 const Purchase = mongoose.model("Purchase",purchaseSchema)
