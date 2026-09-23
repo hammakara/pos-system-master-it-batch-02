@@ -35,3 +35,42 @@ export const create = async(req ,res ,next)=>{
         next(error)
     }
 }
+
+export const getAll = async (req, res, next) => {
+    try {
+
+        // const { page, limit, search } = req.query
+        const page = req.query.page || 1
+        const limit = req.query.limit || 1
+        const skip = (page - 1) * limit
+        const searchQuery = {}
+        if (req.query.search) {
+            searchQuery['$or'] = [
+                {
+                    invoiceNumber: { $regex: req.query.search, $options: 'i' }
+                }
+            ]
+        }
+        const result = await Purchase.find(searchQuery).populate("user","username role")
+            .populate("supplier","businessName name phone")
+            .populate({
+                path:"items",
+                populate:{
+                    path:"product",
+                    select:"name image_url"
+                }
+            })
+            .limit(limit)
+            .skip(skip).sort({ createdAt: -1 })
+        const totalRecord = await Purchase.countDocuments()
+
+        res.status(200).json({
+            success: true,
+            result: result,
+
+            totalPage: Math.ceil(totalRecord / limit)
+        })
+    } catch (error) {
+        next(error)
+    }
+}

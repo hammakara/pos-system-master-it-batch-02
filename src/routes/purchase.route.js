@@ -1,10 +1,10 @@
 import express from 'express'
 import { Roles } from '../middlewares/permission.middleware.js'
-import { create } from '../controllers/purchase.controller.js'
+import { create, getAll } from '../controllers/purchase.controller.js'
 const router = express.Router()
 
 router.post('/',Roles("manager"), create)
-// router.get('/',Roles("manager"), getAll)
+router.get('/',Roles("manager"), getAll)
 // router.get('/:id',Roles("manager"), getOne)
 // router.put('/:id',Roles("manager"), update)
 // router.delete('/:id',Roles("manager"), remove)
